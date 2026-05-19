@@ -12,8 +12,9 @@ The documentation can be accessed [here](https://mitoverse.readthedocs.io/mtdna-
 
 ### Running Pipeline Locally
 ```
-git clone github.com/genepi/mtdna-server-2
-nextflow run main.nf -c tests/test_single_bam.config -profile docker
+git clone https://github.com/genepi/mtdna-server-2
+cd mtdna-server-2
+nextflow run main.nf -c tests/test_single_bam.config -profile <docker,singularity>
 ````
 
 You can find all additional DSL2 parameters and configuration options [here](https://mitoverse.readthedocs.io/mtdna-server/mtdna-server/#nextflow-dsl2-pipeline).
