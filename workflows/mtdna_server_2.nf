@@ -23,7 +23,8 @@ if (params.output_reports == null || params.output_auxiliary == null ) {
     params.output_reports = params.pubDir
     params.output_auxiliary = params.pubDir    
 }
-   
+
+include { CRAMTOBAM } from '../modules/local/cramtobam'   
 include { INDEX_CREATION } from '../modules/local/index_creation'
 include { CALCULATE_STATISTICS } from '../modules/local/calculate_statistics'
 include { INPUT_VALIDATION } from '../modules/local/input_validation'
@@ -46,6 +47,13 @@ workflow MTDNA_SERVER_2 {
     report_file_ch = file("$projectDir/reports/report.Rmd", checkIfExists:true)
     sample_report_file_ch = file("$projectDir/reports/sample.Rmd", checkIfExists:true)
     bams_ch = Channel.fromPath(params.files)
+
+    if ( params.cram ) {
+        CRAMTOBAM (
+            bams_ch
+        )
+        bams_ch = CRAMTOBAM.out.bam_ch
+    }
 
     if ( params.max_samples != 0 && (bams_ch.count() > params.max_samples)) {
         println "::error:: The maximum number of allowed samples is "+ params.max_samples +"."
